@@ -1,7 +1,7 @@
 const API_URL = "http://localhost:4000";
 
 // Ping al backend
-export async function pingServer(): Promise<string> {
+export async function pingServer() {
   const res = await fetch(API_URL);
   return res.text();
 }

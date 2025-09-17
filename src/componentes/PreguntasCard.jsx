@@ -1,10 +1,4 @@
-interface PreguntasCardProps {
-  preguntas: string;
-  options: string[];
-  category: string;
-}
-
-export default function PreguntasCard({ preguntas, options, category }: PreguntasCardProps) {
+export default function PreguntasCard({ preguntas, options, category }) {
   return (
     <div
       style={{

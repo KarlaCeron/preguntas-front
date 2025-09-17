@@ -1,27 +1,29 @@
 import { useEffect, useState } from "react";
-import  io  from "socket.io-client";
+import io from "socket.io-client";
+import { useNavigate } from "react-router-dom";
 
 const socket = io("http://localhost:4000");
 
-interface Jugador {
-  id: string;
-  nombre: string;
-}
-
 export default function Lobby() {
   const [nombre, setNombre] = useState("");
-  const [jugadores, setJugadores] = useState<Jugador[]>([]);
+  const [jugadores, setJugadores] = useState([]);
   const [registrado, setRegistrado] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    socket.on("jugadoresActualizados", (lista: Jugador[]) => {
+    socket.on("jugadoresActualizados", (lista) => {
       setJugadores(lista);
+    });
+
+    socket.on("iniciarJuego", () => {
+      navigate("/juego"); // 🚀 Redirigir cuando el backend diga "iniciar"
     });
 
     return () => {
       socket.off("jugadoresActualizados");
+      socket.off("iniciarJuego");
     };
-  }, []);
+  }, [navigate]);
 
   const registrarJugador = () => {
     if (nombre.trim()) {
@@ -50,6 +52,7 @@ export default function Lobby() {
               <li key={j.id}>{j.nombre}</li>
             ))}
           </ul>
+          <p>Esperando a que se unan {5 - jugadores.length} jugadores...</p>
         </div>
       )}
     </div>

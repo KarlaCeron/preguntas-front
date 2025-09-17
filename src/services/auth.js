@@ -1,7 +1,7 @@
 const API_URL = "http://localhost:4000/auth";
 
 // Registro
-export async function register(nombre: string, email: string, password: string) {
+export async function register(nombre, email, password) {
   const res = await fetch(`${API_URL}/register`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -11,7 +11,7 @@ export async function register(nombre: string, email: string, password: string) 
 }
 
 // Login
-export async function login(email: string, password: string) {
+export async function login(email, password) {
   const res = await fetch(`${API_URL}/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },

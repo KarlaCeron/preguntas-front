@@ -1,32 +1,43 @@
 import { useState } from "react";
-import { login } from "../services/auth";
+import { register } from "../services/auth";
 import { useNavigate, Link } from "react-router-dom";
 
-export default function Login() {
+export default function Registro() {
+  const [nombre, setNombre] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [msg, setMsg] = useState("");
   const navigate = useNavigate();
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
-    const data = await login(email, password);
+    const data = await register(nombre, email, password);
 
-    if (data.token) {
-      localStorage.setItem("token", data.token); // 🔑 Guardar token
-      setMsg(`Bienvenido ${data.usuario.nombre}`);
-
-      // 👇 Redirigir al juego
-      navigate("/juego");
+    if (data.msg && !data.error) {
+      setMsg("✅ Registro exitoso, ahora inicia sesión");
+      setTimeout(() => navigate("/login"), 1500); // 👈 Redirige después de 1.5s
     } else {
-      setMsg(data.msg || data.error || "Error al iniciar sesión");
+      setMsg(data.msg || data.error || "Error en registro");
     }
   };
 
   return (
     <div style={{ maxWidth: "400px", margin: "0 auto", padding: "20px" }}>
-      <h2>Login 🔐</h2>
-      <form onSubmit={handleLogin}>
+      <h2>Registro ✍️</h2>
+      <form onSubmit={handleRegister}>
+        <div>
+          <label htmlFor="nombre">Nombre:</label>
+          <input
+            id="nombre"
+            name="nombre"
+            type="text"
+            placeholder="Nombre"
+            value={nombre}
+            onChange={(e) => setNombre(e.target.value)}
+            required
+          />
+        </div>
+
         <div>
           <label htmlFor="email">Correo:</label>
           <input
@@ -54,14 +65,13 @@ export default function Login() {
         </div>
 
         <br />
-        <button type="submit">Entrar</button>
+        <button type="submit">Registrarse</button>
       </form>
-
       <p>{msg}</p>
 
-      {/* 🔗 Enlace a registro */}
+      {/* 🔗 Enlace al login */}
       <p>
-        ¿No tienes cuenta? <Link to="/register">Regístrate aquí</Link>
+        ¿Ya tienes cuenta? <Link to="/login">Inicia sesión</Link>
       </p>
     </div>
   );
