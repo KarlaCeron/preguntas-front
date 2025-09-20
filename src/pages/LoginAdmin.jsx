@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { login } from "../services/auth";
+import { login } from "../services/authService";
 import { useNavigate, Link } from "react-router-dom";
 
-export default function Login() {
+export default function LoginAdmin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [msg, setMsg] = useState("");
@@ -13,11 +13,9 @@ export default function Login() {
     const data = await login(email, password);
 
     if (data.token) {
-      localStorage.setItem("token", data.token); // 🔑 Guardar token
+      localStorage.setItem("token", data.token);
       setMsg(`Bienvenido ${data.usuario.nombre}`);
-
-      // 👇 Redirigir al juego
-      navigate("/juego");
+      navigate("/dashboard"); // 👈 va al Dashboard
     } else {
       setMsg(data.msg || data.error || "Error al iniciar sesión");
     }
@@ -25,15 +23,13 @@ export default function Login() {
 
   return (
     <div style={{ maxWidth: "400px", margin: "0 auto", padding: "20px" }}>
-      <h2>Login 🔐</h2>
+      <h2>Login Admin 🔐</h2>
       <form onSubmit={handleLogin}>
         <div>
           <label htmlFor="email">Correo:</label>
           <input
             id="email"
-            name="email"
             type="email"
-            placeholder="Correo"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -44,9 +40,7 @@ export default function Login() {
           <label htmlFor="password">Contraseña:</label>
           <input
             id="password"
-            name="password"
             type="password"
-            placeholder="Contraseña"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
@@ -58,10 +52,8 @@ export default function Login() {
       </form>
 
       <p>{msg}</p>
-
-      {/* 🔗 Enlace a registro */}
       <p>
-        ¿No tienes cuenta? <Link to="/register">Regístrate aquí</Link>
+        ¿No tienes cuenta? <Link to="/register-admin">Regístrate</Link>
       </p>
     </div>
   );

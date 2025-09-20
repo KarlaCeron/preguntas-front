@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { register } from "../services/auth";
+import { register } from "../services/authService";
 import { useNavigate, Link } from "react-router-dom";
 
-export default function Registro() {
+export default function RegisterAdmin() {
   const [nombre, setNombre] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -11,27 +11,25 @@ export default function Registro() {
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    const data = await register(nombre, email, password);
+   console.log("📝 Registrando admin:", nombre, email, password);
 
-    if (data.msg && !data.error) {
-      setMsg("✅ Registro exitoso, ahora inicia sesión");
-      setTimeout(() => navigate("/login"), 1500); // 👈 Redirige después de 1.5s
+    if (data.msg) {
+      setMsg(data.msg);
+      navigate("/login-admin"); // 👉 redirige al login
     } else {
-      setMsg(data.msg || data.error || "Error en registro");
+      setMsg(data.error || "Error en el registro");
     }
   };
 
   return (
     <div style={{ maxWidth: "400px", margin: "0 auto", padding: "20px" }}>
-      <h2>Registro ✍️</h2>
+      <h2>Registro de Admin 👑</h2>
       <form onSubmit={handleRegister}>
         <div>
           <label htmlFor="nombre">Nombre:</label>
           <input
             id="nombre"
-            name="nombre"
             type="text"
-            placeholder="Nombre"
             value={nombre}
             onChange={(e) => setNombre(e.target.value)}
             required
@@ -42,9 +40,7 @@ export default function Registro() {
           <label htmlFor="email">Correo:</label>
           <input
             id="email"
-            name="email"
             type="email"
-            placeholder="Correo"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -55,9 +51,7 @@ export default function Registro() {
           <label htmlFor="password">Contraseña:</label>
           <input
             id="password"
-            name="password"
             type="password"
-            placeholder="Contraseña"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
@@ -65,13 +59,12 @@ export default function Registro() {
         </div>
 
         <br />
-        <button type="submit">Registrarse</button>
+        <button type="submit">Registrar</button>
       </form>
-      <p>{msg}</p>
 
-      {/* 🔗 Enlace al login */}
+      <p>{msg}</p>
       <p>
-        ¿Ya tienes cuenta? <Link to="/login">Inicia sesión</Link>
+        ¿Ya tienes cuenta? <Link to="/login-admin">Inicia sesión</Link>
       </p>
     </div>
   );

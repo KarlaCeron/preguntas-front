@@ -1,23 +1,16 @@
-import { Routes, Route, Navigate } from "react-router-dom";
-import Login from "./componentes/Login";
-import Registro from "./componentes/Registro";
-import Juego from "./componentes/Juego";
+// App.jsx
+import { Routes, Route } from "react-router-dom";
+import LoginAdmin from "./pages/LoginAdmin.jsx";
+import RegisterAdmin from "./pages/RegisterAdmin.jsx";
+import Dashboard from "./pages/Dashboard.jsx";
 
 function App() {
-  const token = localStorage.getItem("token");
-
   return (
-    <div style={{ maxWidth: "800px", margin: "0 auto", padding: "20px" }}>
-      <Routes>
-        <Route path="/" element={<Navigate to="/login" />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Registro />} />
-        <Route
-          path="/juego"
-          element={token ? <Juego /> : <Navigate to="/login" />}
-        />
-      </Routes>
-    </div>
+    <Routes>
+      <Route path="/login-admin" element={<LoginAdmin />} />
+      <Route path="/register-admin" element={<RegisterAdmin />} />
+      <Route path="/dashboard" element={<Dashboard />} />
+    </Routes>
   );
 }
 
